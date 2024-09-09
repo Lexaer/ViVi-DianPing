@@ -76,4 +76,9 @@ public class UserController {
 
         return Result.ok(info);
     }
+
+    @GetMapping("/{id}")
+    public Result queryUserById(@PathVariable("id") Long id){
+        return userService.queryUserById(id);
+    }
 }

@@ -1,7 +1,6 @@
 package com.vivi.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.vivi.dto.Result;
@@ -129,6 +128,15 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
                 .collect(Collectors.toList());
 
         return Result.ok(userDTOS);
+    }
+
+    @Override
+    public Result queryBlogByUserId(Integer current, Long id) {
+        Page<Blog> page = this.lambdaQuery()
+                .eq(Blog::getUserId, id)
+                .page(new Page<>(current, SystemConstants.MAX_PAGE_SIZE));
+        return Result.ok(page.getRecords());
+
     }
 
 }
