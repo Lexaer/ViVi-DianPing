@@ -5,15 +5,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.vivi.dto.Result;
 import com.vivi.dto.UserDTO;
 import com.vivi.entity.Blog;
-import com.vivi.entity.User;
 import com.vivi.service.IBlogService;
 import com.vivi.service.IUserService;
 import com.vivi.utils.SystemConstants;
 import com.vivi.utils.UserHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
@@ -29,10 +26,7 @@ public class BlogController {
     @PostMapping
     public Result saveBlog(@RequestBody Blog blog) {
 
-        UserDTO user = UserHolder.getUser();
-        blog.setUserId(user.getId());
-        blogService.save(blog);
-        return Result.ok(blog.getId());
+        return blogService.saveBlog(blog);
     }
 
     @PutMapping("/like/{id}")
@@ -76,6 +70,10 @@ public class BlogController {
             @RequestParam(value = "id") Long id
     ){
         return blogService.queryBlogByUserId(current,id);
+    }
+    @GetMapping("/of/follow")
+    public Result queryBlogOfFollow(@RequestParam("lastId") Long max,@RequestParam(value = "offset",defaultValue = "0") Integer offset){
+        return blogService.queryBlogOfFollow(max,offset);
     }
 
 }
